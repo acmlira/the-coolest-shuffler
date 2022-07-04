@@ -28,6 +28,11 @@ services:
     build:
       context: ./
       dockerfile: ./build/package/Dockerfile
+    depends_on:
+      - postgres
+    links:
+      - postgres
+      - redis
 volumes:
   redis:
     driver: local
