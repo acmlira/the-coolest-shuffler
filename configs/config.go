@@ -50,13 +50,13 @@ func Config() *viper.Viper {
 }
 
 func GetPostgresDSN() string {
-	return "host=" + config.GetString("postgres.host") + 
-	" user=" + config.GetString("postgres.user") + 
-	" password=" + config.GetString("postgres.password") +
-	" dbname=" + config.GetString("postgres.database") +
-	" port=" + config.GetString("postgres.port") +
-	" sslmode=" + config.GetString("postgres.sslmode") +
-	" TimeZone=" + config.GetString("postgres.timezone")
+	return "host=" + config.GetString("postgres.host") +
+		" user=" + config.GetString("postgres.user") +
+		" password=" + config.GetString("postgres.password") +
+		" dbname=" + config.GetString("postgres.database") +
+		" port=" + config.GetString("postgres.port") +
+		" sslmode=" + config.GetString("postgres.sslmode") +
+		" TimeZone=" + config.GetString("postgres.timezone")
 }
 
 func GetRedisHost() string {
