@@ -6,7 +6,7 @@ type Deck struct {
 	Id        uuid.UUID `json:"deck_id"`
 	Remaining int       `json:"remaining"`
 	Shuffle   bool      `json:"shuffled"`
-	Amount    int       `json:"-"`
+	Amount    int       `json:"amount"`
 	Cards     []Card    `json:"cards"`
 }
 
