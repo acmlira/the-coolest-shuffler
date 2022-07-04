@@ -12,6 +12,7 @@ import (
 	"the-coolest-shuffler/internal/model"
 	"the-coolest-shuffler/internal/repository"
 
+	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,7 +24,7 @@ func TestDeck(t *testing.T) {
 		codes    []string
 		values   []string
 		suits    []string
-		expected model.Deck
+		expected *model.Deck
 		name     string
 	}
 
@@ -33,7 +34,7 @@ func TestDeck(t *testing.T) {
 		[]string{"AC"},
 		[]string{"ACE"},
 		[]string{"CLUBS"},
-		*model.NewDeck([]model.Card{{Value: "ACE", Suit: "CLUBS", Code: "AC"}}, false, 1),
+		model.NewDeck(uuid.New(), []model.Card{{Value: "ACE", Suit: "CLUBS", Code: "AC"}}, 1, false, 1),
 		"integration",
 	}
 

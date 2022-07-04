@@ -11,9 +11,9 @@ import (
 )
 
 type Shuffler interface {
-	CreateNewDeck(context context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) model.Deck
-	OpenDeck(context context.Context, id uuid.UUID) model.Deck
-	DrawCard(context context.Context, id uuid.UUID, count int) model.Draw
+	CreateNewDeck(context context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) *model.Deck
+	OpenDeck(context context.Context, id uuid.UUID) *model.Deck
+	DrawCard(context context.Context, id uuid.UUID, count int) *model.Draw
 }
 
 type Deck struct {

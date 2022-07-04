@@ -17,42 +17,48 @@ type Shuffler struct {
 }
 
 // CreateNewDeck provides a mock function with given fields: _a0, shuffle, amount, codes, values, suits
-func (_m *Shuffler) CreateNewDeck(_a0 context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) model.Deck {
+func (_m *Shuffler) CreateNewDeck(_a0 context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) *model.Deck {
 	ret := _m.Called(_a0, shuffle, amount, codes, values, suits)
 
-	var r0 model.Deck
-	if rf, ok := ret.Get(0).(func(context.Context, bool, int, []string, []string, []string) model.Deck); ok {
+	var r0 *model.Deck
+	if rf, ok := ret.Get(0).(func(context.Context, bool, int, []string, []string, []string) *model.Deck); ok {
 		r0 = rf(_a0, shuffle, amount, codes, values, suits)
 	} else {
-		r0 = ret.Get(0).(model.Deck)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Deck)
+		}
 	}
 
 	return r0
 }
 
 // DrawCard provides a mock function with given fields: _a0, id, count
-func (_m *Shuffler) DrawCard(_a0 context.Context, id uuid.UUID, count int) model.Draw {
+func (_m *Shuffler) DrawCard(_a0 context.Context, id uuid.UUID, count int) *model.Draw {
 	ret := _m.Called(_a0, id, count)
 
-	var r0 model.Draw
-	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, int) model.Draw); ok {
+	var r0 *model.Draw
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, int) *model.Draw); ok {
 		r0 = rf(_a0, id, count)
 	} else {
-		r0 = ret.Get(0).(model.Draw)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Draw)
+		}
 	}
 
 	return r0
 }
 
 // OpenDeck provides a mock function with given fields: _a0, id
-func (_m *Shuffler) OpenDeck(_a0 context.Context, id uuid.UUID) model.Deck {
+func (_m *Shuffler) OpenDeck(_a0 context.Context, id uuid.UUID) *model.Deck {
 	ret := _m.Called(_a0, id)
 
-	var r0 model.Deck
-	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) model.Deck); ok {
+	var r0 *model.Deck
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) *model.Deck); ok {
 		r0 = rf(_a0, id)
 	} else {
-		r0 = ret.Get(0).(model.Deck)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Deck)
+		}
 	}
 
 	return r0

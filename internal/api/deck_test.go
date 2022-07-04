@@ -23,16 +23,16 @@ func TestDeck(t *testing.T) {
 		mock.Anything,
 		mock.Anything,
 		mock.Anything,
-		mock.Anything).Return(model.Deck{})
+		mock.Anything).Return(&model.Deck{})
 
 	service.On("OpenDeck",
 		mock.Anything,
-		mock.Anything).Return(model.Deck{})
+		mock.Anything).Return(&model.Deck{})
 
 	service.On("DrawCard",
 		mock.Anything,
 		mock.Anything,
-		mock.Anything).Return(model.Draw{})
+		mock.Anything).Return(&model.Draw{})
 
 	t.Run(`CreateNewDeck`, func(t *testing.T) {
 		tested := Deck{service}

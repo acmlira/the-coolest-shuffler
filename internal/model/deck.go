@@ -10,10 +10,10 @@ type Deck struct {
 	Cards     []Card    `json:"cards"`
 }
 
-func NewDeck(cards []Card, shuffle bool, amount int) *Deck {
+func NewDeck(id uuid.UUID, cards []Card, remaining int, shuffle bool, amount int) *Deck {
 	return &Deck{
-		Id:        uuid.New(),
-		Remaining: len(cards),
+		Id:        id,
+		Remaining: remaining,
 		Shuffle:   shuffle,
 		Amount:    amount,
 		Cards:     cards,
