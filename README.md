@@ -2,22 +2,48 @@
 
 ![The standard 52-card deck of French playing cards illustration](assets/the-coolest-shuffler.png)
 
-## Discovery
+## Build
 
-Challenge:
+This project has only one dependency to run: **docker-compose**. For development purposes you may need to: 
 
-> Create a REST API to handle the deck and cards to be used in any card game
+- **Go 1.18** 
+- **make**
 
-There are a few important points in this sentence:
+To start you must run:
+```sh
+docker-compose up -d
+```
+To stop the app you must run:
+```sh
+docker-compose stop
+```
 
-1. _REST API_
+## API
+Create a new **Deck**:
 
-    The first thing I think about this topic is: REST equals CRUD for web. Next I think of RESTFul Routing and Entity Modeling.
+```sh
+curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/new"
+```
 
-2. _Deck and cards_
+Open a **Deck**:
 
-    Thinking about entities: decks and cards. Deck is a collection of cards. All the deck entity has is an ID, a set of cards, and some transient data. On the other hand, the cards have names (values), suits and codes.
+```sh
+curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/:id"
+```
 
-3. _Any card game_
+Draw a **Card**:
 
-    I assume that we are talking about card games played with the standard 52-card deck of French playing cards.
+```sh
+curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/:id/draw"
+```
+
+## Troubleshooting
+
+Some [Makefile](Makefile) goals need to run global dependencies, if you have problems running _mockery_, please, try:
+
+```sh
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+```
+
+> HINT: your `go` installation path can be different.
