@@ -4,7 +4,7 @@
 
 ## Discovery
 
-Summarizing the content of [this page](https://toggl.notion.site/Toggl-Backend-Unattended-Programming-Test-015a95428b044b4398ba62ccc72a007e) in one sentence, it would be:
+Challenge:
 
 > Create a REST API to handle the deck and cards to be used in any card game
 
