@@ -18,6 +18,18 @@ To stop the app you must run:
 docker-compose stop
 ```
 
+## Testing
+
+If you want to run the tests you can call:
+```sh
+make test
+``` 
+or
+```sh
+make test-all
+``` 
+for testing everything (integration tests included).
+
 ## API
 Create a new **Deck**:
 

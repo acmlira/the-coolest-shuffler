@@ -12,6 +12,9 @@ clean:
 test:
 	go test -v -count=1 ./...
 
+test-all:
+	go test -v -count=1 -tags=all ./...
+
 lint:
 	gofmt -w .
 

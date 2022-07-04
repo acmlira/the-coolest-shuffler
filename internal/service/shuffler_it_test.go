@@ -33,7 +33,7 @@ func TestDeck(t *testing.T) {
 		[]string{"AC"},
 		[]string{"ACE"},
 		[]string{"CLUBS"},
-		model.NewDeck([]model.Card{{Value: "ACE", Suit: "CLUBS", Code: "AC"}}, false, 1),
+		*model.NewDeck([]model.Card{{Value: "ACE", Suit: "CLUBS", Code: "AC"}}, false, 1),
 		"integration",
 	}
 
@@ -48,7 +48,7 @@ func TestDeck(t *testing.T) {
 		configs.GetRedisPassword())
 
 	t.Run(it.name, func(t *testing.T) {
-		var deckService = NewDeckService()
+		var deckService = NewShuffler()
 		var newDeck = deckService.CreateNewDeck(
 			context.Background(),
 			it.shuffle,
