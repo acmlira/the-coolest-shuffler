@@ -19,4 +19,3 @@ func NewDeck(cards []Card, shuffle bool, amount int) *Deck {
 		Cards:     cards,
 	}
 }
-

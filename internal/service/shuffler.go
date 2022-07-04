@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"math/rand"
 	"encoding/json"
+	"math/rand"
 	"time"
 
 	"the-coolest-shuffler/internal/dao"
@@ -14,7 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type Shuffler struct {}
+type Shuffler struct{}
 
 func NewShuffler() *Shuffler {
 	return &Shuffler{}
@@ -74,8 +74,8 @@ func draw(deck model.Deck, count int) model.Draw {
 func applyShuffle(deck model.Deck) model.Deck {
 	if deck.Shuffle {
 		rand.Seed(time.Now().UnixNano())
-		rand.Shuffle(len(deck.Cards), func(i, j int) { 
-			deck.Cards[i], deck.Cards[j] = deck.Cards[j], deck.Cards[i] 
+		rand.Shuffle(len(deck.Cards), func(i, j int) {
+			deck.Cards[i], deck.Cards[j] = deck.Cards[j], deck.Cards[i]
 		})
 	}
 	return deck

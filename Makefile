@@ -1,4 +1,4 @@
-all: clean build run
+all: clean test build run
 
 build:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build ./cmd/main.go
@@ -11,6 +11,9 @@ clean:
 
 test:
 	go test -v -count=1 ./...
+
+lint:
+	gofmt -w .
 
 mockery-install:
 	cd /tmp && go install github.com/vektra/mockery/v2@latest
