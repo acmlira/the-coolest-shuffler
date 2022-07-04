@@ -47,3 +47,30 @@ export PATH=$PATH:$GOPATH/bin
 ```
 
 > HINT: your `go` installation path can be different.
+
+Problems like:
+```log
+ERRO[0000] failed to connect to `host=the-coolest-shuffler-postgres user=postgres database=postgres`: hostname resolving error (lookup the-coolest-shuffler-postgres: Temporary failure in name resolution)
+```
+
+Try this `configs/application.yaml`:
+
+```yaml
+version: "1.0.0"
+postgres:
+  host: "localhost"
+  port: "5432"
+  database: "postgres"
+  user: "postgres"
+  password: "postgres"
+  timezone: "America/Fortaleza"
+  sslmode: "disable"
+redis:
+  host: "localhost"
+  port: "6379"
+  database: 0
+  password: ""
+app:
+  host: "localhost"
+  port: "8916"
+```
