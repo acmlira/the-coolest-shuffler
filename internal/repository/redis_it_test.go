@@ -35,27 +35,20 @@ func TestRedis(t *testing.T) {
 		"delete then get",
 	}
 
-	t.Run(putScenario.name, func(t *testing.T) {
-		configs.Init()
-		Cache(
-			configs.GetRedisHost(),
-			configs.GetRedisPort(),
-			configs.GetRedisDatabase(),
-			configs.GetRedisPassword())
+	configs.Init()
+	Cache(
+		configs.GetRedisHost(),
+		configs.GetRedisPort(),
+		configs.GetRedisDatabase(),
+		configs.GetRedisPassword())
 
+	t.Run(putScenario.name, func(t *testing.T) {
 		Set(putScenario.value, putScenario.defaultValue)
 		value := Get(putScenario.value)
 		assert.Equal(t, putScenario.expected, value)
 	})
 
 	t.Run(removeScenario.name, func(t *testing.T) {
-		configs.Init()
-		Cache(
-			configs.GetRedisHost(),
-			configs.GetRedisPort(),
-			configs.GetRedisDatabase(),
-			configs.GetRedisPassword())
-
 		Del(removeScenario.value)
 		value := Get(removeScenario.value)
 		assert.Equal(t, removeScenario.expected, value)
