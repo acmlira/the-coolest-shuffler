@@ -1,4 +1,5 @@
 # The Coolest Shuffler
+_API to handle the deck and cards to be used in any game like Poker or Blackjack_
 
 ![The standard 52-card deck of French playing cards illustration](assets/the-coolest-shuffler.png)
 
