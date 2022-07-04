@@ -22,7 +22,7 @@ docker-compose stop
 Create a new **Deck**:
 
 ```sh
-curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/new"
+curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/new?shuffle=true&amount=2&suits=CLUBS"
 ```
 
 Open a **Deck**:
@@ -34,7 +34,7 @@ curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/:id"
 Draw a **Card**:
 
 ```sh
-curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/:id/draw"
+curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/:id/draw?count=1"
 ```
 
 ## Troubleshooting
