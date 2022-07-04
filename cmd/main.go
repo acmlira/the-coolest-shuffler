@@ -28,7 +28,7 @@ func main() {
 	server.HidePort = true
 
 	// Register API routes
-	api.Deck{Manager: service.NewDeckService()}.Register(server)
+	api.Deck{Shuffler: service.NewShuffler()}.Register(server)
 
 	// Start procedure
 	log.Info("Starting the-coolest-shuffler in http://" + configs.GetAppUrl())

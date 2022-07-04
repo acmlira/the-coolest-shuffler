@@ -16,7 +16,7 @@ import (
 
 func TestDeck(t *testing.T) {
 	id := uuid.New()
-	service := &mocks.DeckManager{}
+	service := &mocks.Shuffler{}
 	service.On("CreateNewDeck",
 		mock.Anything,
 		mock.Anything,

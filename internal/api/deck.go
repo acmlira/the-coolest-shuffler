@@ -10,14 +10,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type DeckManager interface {
+type Shuffler interface {
 	CreateNewDeck(context context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) model.Deck
 	OpenDeck(context context.Context, id uuid.UUID) model.Deck
 	DrawCard(context context.Context, id uuid.UUID, count int) model.Draw
 }
 
 type Deck struct {
-	Manager DeckManager
+	Shuffler Shuffler
 }
 
 func (d Deck) Register(server *echo.Echo) {
@@ -33,7 +33,7 @@ func (d Deck) CreateNewDeck(c echo.Context) error {
 	codes := OptionalStringList(c.QueryParam("codes"), "?codes=")
 	values := OptionalStringList(c.QueryParam("values"), "?values=")
 	suits := OptionalStringList(c.QueryParam("suits"), "?suits=")
-	return c.JSON(http.StatusOK, d.Manager.CreateNewDeck(c.Request().Context(), shuffle, amount, codes, values, suits))
+	return c.JSON(http.StatusOK, d.Shuffler.CreateNewDeck(c.Request().Context(), shuffle, amount, codes, values, suits))
 }
 
 func (d Deck) OpenDeck(c echo.Context) error {
@@ -41,7 +41,7 @@ func (d Deck) OpenDeck(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
-	return c.JSON(http.StatusOK, d.Manager.OpenDeck(c.Request().Context(), id))
+	return c.JSON(http.StatusOK, d.Shuffler.OpenDeck(c.Request().Context(), id))
 }
 
 func (d Deck) DrawCard(c echo.Context) error {
@@ -50,5 +50,5 @@ func (d Deck) DrawCard(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, err)
 	}
 	count := OptionalInt(c.QueryParam("count"), "?count=", 1)
-	return c.JSON(http.StatusOK, d.Manager.DrawCard(c.Request().Context(), id, count))
+	return c.JSON(http.StatusOK, d.Shuffler.DrawCard(c.Request().Context(), id, count))
 }
