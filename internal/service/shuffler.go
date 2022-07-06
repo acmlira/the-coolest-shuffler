@@ -3,62 +3,95 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"time"
 
-	"the-coolest-shuffler/internal/dao"
 	"the-coolest-shuffler/internal/model"
-	"the-coolest-shuffler/internal/repository"
 
 	uuid "github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 )
 
-type Shuffler struct{}
+type Cache interface {
+	Set(key string, value string)
+	Get(key string) string
+	Del(key string)
+}
 
-func NewShuffler() *Shuffler {
-	return &Shuffler{}
+type Database interface {
+	Select(table string, filter map[string][]string, model interface{}) []map[string]interface{}
+}
+
+type Shuffler struct{
+	Cache    Cache
+	Database Database
+}
+
+func NewShuffler(cache Cache, database Database) *Shuffler {
+	return &Shuffler{
+		Cache:    cache,
+		Database: database,
+	}
 }
 
 func (s *Shuffler) CreateNewDeck(ctx context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) *model.Deck {
-	var cards = dao.NewCard().Select(codes, values, suits)
+	var m = make(map[string][]string, 10)
+	m["code"] = codes
+	m["value"] = values
+	m["suit"] = suits
+
+	var cardsRaw = s.Database.Select("cards", m, model.Card{})
+
+	cards := []model.Card{}
+	for _, v := range cardsRaw {
+		card := model.Card{
+			Code:  v["code"].(string),
+			Suit:  v["suit"].(string),
+			Value: v["value"].(string),
+		}
+		cards = append(cards, card)
+	}
+
+	fmt.Printf("cards: %v\n", cards)
+
 	var deck = model.NewDeck(uuid.New(), cards, len(cards), shuffle, amount)
 	var deckAmounted = applyAmount(deck)
 	var deckShuffled = applyShuffle(deckAmounted)
-	putOnCache(deckShuffled)
+	s.putOnCache(deckShuffled)
 	return deckShuffled
 }
 
 func (s *Shuffler) OpenDeck(ctx context.Context, id uuid.UUID) *model.Deck {
-	return getFromCache(id)
+	return s.getFromCache(id)
 }
 
 func (s *Shuffler) DrawCard(ctx context.Context, id uuid.UUID, count int) *model.Draw {
-	deck := getFromCache(id)
+	deck := s.getFromCache(id)
 	deck, draw := doDraw(deck, count)
-	updateOnCache(id, deck)
+	s.updateOnCache(id, deck)
 	return draw
 }
 
-func putOnCache(deck *model.Deck) {
+func (s *Shuffler) putOnCache(deck *model.Deck) {
 	encoded, err := json.Marshal(deck)
 	if err == nil {
-		repository.Set(deck.Id.String(), string(encoded))
+		s.Cache.Set(deck.Id.String(), string(encoded))
 	} else {
 		log.Warn("Cannot insert key: value into cache")
 	}
 }
 
-func getFromCache(id uuid.UUID) *model.Deck {
+func (s *Shuffler) getFromCache(id uuid.UUID) *model.Deck {
 	deck := &model.Deck{}
-	deckJson := repository.Get(id.String())
+	deckJson := s.Cache.Get(id.String())
 	json.Unmarshal([]byte(deckJson), deck)
 	return deck
 }
 
-func updateOnCache(id uuid.UUID, deck *model.Deck) {
-	repository.Del(id.String())
-	putOnCache(deck)
+func (s *Shuffler) updateOnCache(id uuid.UUID, deck *model.Deck) {
+	s.Cache.Del(id.String())
+	s.putOnCache(deck)
 }
 
 func doDraw(deck *model.Deck, count int) (*model.Deck, *model.Draw) {

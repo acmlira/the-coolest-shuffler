@@ -15,10 +15,9 @@ func main() {
 	configs.Init()
 
 	// Initialize repositories
-	repository.Database(configs.GetPostgresDSN())
-	repository.Cache(
-		configs.GetRedisHost(),
-		configs.GetRedisPort(),
+	database := repository.NewDatabase(configs.GetPostgresDSN())
+	cache := repository.NewCache(
+		configs.GetRedisUrl(),
 		configs.GetRedisDatabase(),
 		configs.GetRedisPassword())
 
@@ -27,8 +26,11 @@ func main() {
 	server.HideBanner = true
 	server.HidePort = true
 
+	shuffler := service.NewShuffler(cache, database)
+
 	// Register API routes
-	api.Deck{Shuffler: service.NewShuffler()}.Register(server)
+	decks := api.NewDecks(shuffler)
+	decks.Register(server)
 
 	// Start procedure
 	log.Info("Starting the-coolest-shuffler in http://" + configs.GetAppUrl())

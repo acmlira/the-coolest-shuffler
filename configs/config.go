@@ -59,6 +59,10 @@ func GetPostgresDSN() string {
 		" TimeZone=" + config.GetString("postgres.timezone")
 }
 
+func GetRedisUrl() string {
+	return config.GetString("redis.host") + ":" + config.GetString("redis.port")
+}
+
 func GetRedisHost() string {
 	return config.GetString("redis.host")
 }

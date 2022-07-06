@@ -23,3 +23,4 @@ mockery-install:
 
 mockery: mockery-install
 	mockery --all --dir ./internal/api --output ./internal/api/mocks
+	mockery --all --dir ./internal/service --output ./internal/service/mocks

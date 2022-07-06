@@ -16,18 +16,24 @@ type Shuffler interface {
 	DrawCard(context context.Context, id uuid.UUID, count int) *model.Draw
 }
 
-type Deck struct {
+type Decks struct {
 	Shuffler Shuffler
 }
 
-func (d Deck) Register(server *echo.Echo) {
+func NewDecks(shuffler Shuffler) *Decks {
+	return &Decks{
+		Shuffler: shuffler,
+	}
+}
+
+func (d Decks) Register(server *echo.Echo) {
 	v1 := server.Group("the-coolest-shuffler/v1")
 	v1.GET("/deck/new", d.CreateNewDeck)
 	v1.GET("/deck/:id", d.OpenDeck)
 	v1.GET("/deck/:id/draw", d.DrawCard)
 }
 
-func (d Deck) CreateNewDeck(c echo.Context) error {
+func (d Decks) CreateNewDeck(c echo.Context) error {
 	shuffle := OptionalBool(c.QueryParam("shuffle"), "?shuffle=", false)
 	amount := OptionalInt(c.QueryParam("amount"), "?amount=", 1)
 	codes := OptionalStringList(c.QueryParam("codes"), "?codes=")
@@ -36,7 +42,7 @@ func (d Deck) CreateNewDeck(c echo.Context) error {
 	return c.JSON(http.StatusOK, d.Shuffler.CreateNewDeck(c.Request().Context(), shuffle, amount, codes, values, suits))
 }
 
-func (d Deck) OpenDeck(c echo.Context) error {
+func (d Decks) OpenDeck(c echo.Context) error {
 	id, err := RequiredUUID(c.Param("id"), ":id")
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
@@ -44,7 +50,7 @@ func (d Deck) OpenDeck(c echo.Context) error {
 	return c.JSON(http.StatusOK, d.Shuffler.OpenDeck(c.Request().Context(), id))
 }
 
-func (d Deck) DrawCard(c echo.Context) error {
+func (d Decks) DrawCard(c echo.Context) error {
 	id, err := RequiredUUID(c.Param("id"), ":id")
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)

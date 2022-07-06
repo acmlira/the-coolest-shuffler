@@ -7,32 +7,31 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var ctx = context.Background()
-var r *redis.Client
-
-func Cache(host string, port string, database int, password string) *redis.Client {
-	r = redis.NewClient(&redis.Options{
-		Addr:     host + ":" + port,
-		Password: password,
-		DB:       database,
-	})
-
-	return r
+type Cache struct {
+	Redis   *redis.Client
+	Context context.Context
 }
 
-func GetCache() *redis.Client {
-	return r
+func NewCache(url string, database int, password string) *Cache{
+	return &Cache{
+		Redis: redis.NewClient(&redis.Options{
+			Addr:     url,
+			Password: password,
+			DB:       database,
+		}), 
+		Context: context.Background(),
+	}
 }
 
-func Set(key string, value string) {
-	err := r.Set(ctx, key, value, 0).Err()
+func (c *Cache) Set(key string, value string) {
+	err := c.Redis.Set(c.Context, key, value, 0).Err()
 	if err != nil {
 		log.Error(err)
 	}
 }
 
-func Get(key string) string {
-	value, err := r.Get(ctx, key).Result()
+func (c *Cache) Get(key string) string {
+	value, err := c.Redis.Get(c.Context, key).Result()
 	if err == redis.Nil {
 		log.Info(key + " does not exist, cannot get")
 	} else if err != nil {
@@ -43,13 +42,13 @@ func Get(key string) string {
 	return value
 }
 
-func Del(key string) {
-	err := r.Del(ctx, key).Err()
+func (c *Cache) Del(key string) {
+	err := c.Redis.Del(c.Context, key).Err()
 	if err == redis.Nil {
 		log.Info(key + " does not exist, cannot delete")
 	} else if err != nil {
 		log.Error(err)
 	} else {
-		log.Info(key + " deleted")
+		log.Debug(key + " deleted")
 	}
 }
