@@ -17,22 +17,9 @@ import (
 func TestDeck(t *testing.T) {
 	id := uuid.New()
 	service := &mocks.Shuffler{}
-	service.On("CreateNewDeck",
-		mock.Anything,
-		mock.Anything,
-		mock.Anything,
-		mock.Anything,
-		mock.Anything,
-		mock.Anything).Return(&model.Deck{})
-
-	service.On("OpenDeck",
-		mock.Anything,
-		mock.Anything).Return(&model.Deck{})
-
-	service.On("DrawCard",
-		mock.Anything,
-		mock.Anything,
-		mock.Anything).Return(&model.Draw{})
+	service.On("CreateNewDeck", mock.Anything, mock.Anything).Return(&model.Deck{})
+	service.On("OpenDeck", mock.Anything).Return(&model.Deck{})
+	service.On("DrawCard", mock.Anything, mock.Anything).Return(&model.Draw{})
 
 	t.Run(`CreateNewDeck`, func(t *testing.T) {
 		tested := Decks{service}

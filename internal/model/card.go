@@ -6,7 +6,7 @@ type Card struct {
 	Code  string `json:"code"`
 }
 
-func NewCard(code  string, value string, suit  string) *Card {
+func NewCard(code string, value string, suit string) *Card {
 	return &Card{
 		Value: value,
 		Code:  code,

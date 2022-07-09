@@ -1,11 +1,10 @@
 package service
 
 import (
-	"context"
 	"encoding/json"
-	"math/rand"
-	"time"
 
+	"the-coolest-shuffler/internal/filter"
+	"the-coolest-shuffler/internal/handler"
 	"the-coolest-shuffler/internal/model"
 
 	uuid "github.com/google/uuid"
@@ -19,7 +18,7 @@ type Cache interface {
 }
 
 type Database interface {
-	Select(table string, filter map[string][]string, model interface{}) []map[string]interface{}
+	Select(table string, target interface{}, filter map[string][]string) interface{}
 }
 
 type Shuffler struct{
@@ -34,28 +33,19 @@ func NewShuffler(cache Cache, database Database) *Shuffler {
 	}
 }
 
-func (s *Shuffler) CreateNewDeck(ctx context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) *model.Deck {
-	filter := map[string][]string{"code": codes, "value": values, "suit": suits}
-	raw := s.Database.Select("cards", filter, model.Card{})
-	cards := []model.Card{}
-
-	for _, v := range raw {
-		card := model.NewCard(v["code"].(string), v["value"].(string), v["suit"].(string))
-		cards = append(cards, *card)
-	}
-
-	deck := model.NewDeck(uuid.New(), cards, len(cards), shuffle, amount)
-	s.handleAmount(deck)
-	s.handleShuffle(deck)
+func (s *Shuffler) CreateNewDeck(shuffle bool, amount int, cardFilter *filter.CardFilter) *model.Deck {
+	cards := s.Database.Select("cards", []model.Card{}, cardFilter.Filter).([]model.Card)
+	deck := model.NewDeck(uuid.New(), cards, shuffle, amount)
+	handler.NewDeckHandler().Handle(deck)
 	s.set(deck)
 	return deck
 }
 
-func (s *Shuffler) OpenDeck(ctx context.Context, id uuid.UUID) *model.Deck {
+func (s *Shuffler) OpenDeck(id uuid.UUID) *model.Deck {
 	return s.get(id)
 }
 
-func (s *Shuffler) DrawCard(ctx context.Context, id uuid.UUID, count int) *model.Draw {
+func (s *Shuffler) DrawCard(id uuid.UUID, count int) *model.Draw {
 	deck := s.get(id)
 	draw := []model.Card{}
 	for i := 0; i < count; i++ {
@@ -64,7 +54,6 @@ func (s *Shuffler) DrawCard(ctx context.Context, id uuid.UUID, count int) *model
 		deck.Cards = append(deck.Cards[:0], deck.Cards[1:]...)
 	}
 	deck.Remaining = len(deck.Cards)
-	s.del(id, deck)
 	s.set(deck)
 	return model.NewDraw(draw)
 }
@@ -80,34 +69,6 @@ func (s *Shuffler) set(deck *model.Deck) {
 
 func (s *Shuffler) get(id uuid.UUID) *model.Deck {
 	deck := &model.Deck{}
-	deckJson := s.Cache.Get(id.String())
-	json.Unmarshal([]byte(deckJson), deck)
+	json.Unmarshal([]byte(s.Cache.Get(id.String())), deck)
 	return deck
-}
-
-func (s *Shuffler) del(id uuid.UUID, deck *model.Deck) {
-	s.Cache.Del(id.String())
-}
-
-func (s *Shuffler) handleShuffle(deck *model.Deck) {
-	if deck.Shuffle {
-		rand.Seed(time.Now().UnixNano())
-		rand.Shuffle(len(deck.Cards), func(i, j int) {
-			deck.Cards[i], deck.Cards[j] = deck.Cards[j], deck.Cards[i]
-		})
-	}
-}
-
-func (s *Shuffler) handleAmount(deck *model.Deck) {
-	if deck.Amount == 0 {
-		deck.Cards = []model.Card{}
-		deck.Remaining = 0
-	}
-	if deck.Amount > 1 {
-		cards := deck.Cards
-		for i := 1; i < deck.Amount; i++ {
-			deck.Cards = append(deck.Cards, cards...)
-		}
-		deck.Remaining = len(deck.Cards)
-	}
 }

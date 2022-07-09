@@ -1,9 +1,9 @@
 package api
 
 import (
-	"context"
 	"net/http"
 
+	"the-coolest-shuffler/internal/filter"
 	"the-coolest-shuffler/internal/model"
 
 	"github.com/google/uuid"
@@ -11,9 +11,9 @@ import (
 )
 
 type Shuffler interface {
-	CreateNewDeck(context context.Context, shuffle bool, amount int, codes []string, values []string, suits []string) *model.Deck
-	OpenDeck(context context.Context, id uuid.UUID) *model.Deck
-	DrawCard(context context.Context, id uuid.UUID, count int) *model.Draw
+	CreateNewDeck(shuffle bool, amount int, cardFilter *filter.CardFilter) *model.Deck
+	OpenDeck(id uuid.UUID) *model.Deck
+	DrawCard(id uuid.UUID, count int) *model.Draw
 }
 
 type Decks struct {
@@ -34,27 +34,37 @@ func (d Decks) Register(server *echo.Echo) {
 }
 
 func (d Decks) CreateNewDeck(c echo.Context) error {
-	shuffle := OptionalBool(c.QueryParam("shuffle"), "?shuffle=", false)
-	amount := OptionalInt(c.QueryParam("amount"), "?amount=", 1)
-	codes := OptionalStringList(c.QueryParam("codes"), "?codes=")
-	values := OptionalStringList(c.QueryParam("values"), "?values=")
-	suits := OptionalStringList(c.QueryParam("suits"), "?suits=")
-	return c.JSON(http.StatusOK, d.Shuffler.CreateNewDeck(c.Request().Context(), shuffle, amount, codes, values, suits))
+	shuffle := optionalBool(c.QueryParam("shuffle"), "?shuffle=", false)
+	amount := optionalInt(c.QueryParam("amount"), "?amount=", 1)
+	cardFilter := filter.NewCardFilter(
+		optionalStringList(c.QueryParam("codes"), "?codes="),
+		optionalStringList(c.QueryParam("values"), "?values="),
+		optionalStringList(c.QueryParam("suits"), "?suits="),
+	)
+	return ok(c, d.Shuffler.CreateNewDeck(shuffle, amount, cardFilter))
 }
 
 func (d Decks) OpenDeck(c echo.Context) error {
-	id, err := RequiredUUID(c.Param("id"), ":id")
-	if err != nil {
-		return c.JSON(http.StatusNotFound, err)
+	id, e := requiredUUID(c.Param("id"), ":id")
+	if e != nil {
+		return notFound(c, e)
 	}
-	return c.JSON(http.StatusOK, d.Shuffler.OpenDeck(c.Request().Context(), id))
+	return ok(c, d.Shuffler.OpenDeck(id))
 }
 
 func (d Decks) DrawCard(c echo.Context) error {
-	id, err := RequiredUUID(c.Param("id"), ":id")
-	if err != nil {
-		return c.JSON(http.StatusNotFound, err)
+	id, e := requiredUUID(c.Param("id"), ":id")
+	if e != nil {
+		return notFound(c, e)
 	}
-	count := OptionalInt(c.QueryParam("count"), "?count=", 1)
-	return c.JSON(http.StatusOK, d.Shuffler.DrawCard(c.Request().Context(), id, count))
+	count := optionalInt(c.QueryParam("count"), "?count=", 1)
+	return ok(c, d.Shuffler.DrawCard(id, count))
+}
+
+func ok(context echo.Context, object interface{}) error {
+	return context.JSON(http.StatusOK, object)
+}
+
+func notFound(context echo.Context, object error) error {
+	return context.JSON(http.StatusNotFound, object)
 }

@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func RequiredUUID(query string, hint string) (uuid.UUID, error) {
+func requiredUUID(query string, hint string) (uuid.UUID, error) {
 	value, err := uuid.Parse(query)
 	if err != nil {
 		log.Warn("Param '" + hint + "' must a valid UUID")
@@ -17,7 +17,7 @@ func RequiredUUID(query string, hint string) (uuid.UUID, error) {
 	return value, nil
 }
 
-func OptionalInt(query string, hint string, defaultValue int) int {
+func optionalInt(query string, hint string, defaultValue int) int {
 	if query == "" {
 		return defaultValue
 	}
@@ -31,7 +31,7 @@ func OptionalInt(query string, hint string, defaultValue int) int {
 	return outcome
 }
 
-func OptionalBool(query string, hint string, defaultValue bool) bool {
+func optionalBool(query string, hint string, defaultValue bool) bool {
 	if query == "" {
 		return defaultValue
 	}
@@ -44,7 +44,7 @@ func OptionalBool(query string, hint string, defaultValue bool) bool {
 	return outcome
 }
 
-func OptionalStringList(query string, hint string) []string {
+func optionalStringList(query string, hint string) []string {
 	if len(query) == 0 {
 		return []string{}
 	}

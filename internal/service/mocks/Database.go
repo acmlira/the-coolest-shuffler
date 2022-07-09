@@ -9,16 +9,16 @@ type Database struct {
 	mock.Mock
 }
 
-// Select provides a mock function with given fields: table, filter, model
-func (_m *Database) Select(table string, filter map[string][]string, model interface{}) []map[string]interface{} {
-	ret := _m.Called(table, filter, model)
+// Select provides a mock function with given fields: table, target, filter
+func (_m *Database) Select(table string, target interface{}, filter map[string][]string) interface{} {
+	ret := _m.Called(table, target, filter)
 
-	var r0 []map[string]interface{}
-	if rf, ok := ret.Get(0).(func(string, map[string][]string, interface{}) []map[string]interface{}); ok {
-		r0 = rf(table, filter, model)
+	var r0 interface{}
+	if rf, ok := ret.Get(0).(func(string, interface{}, map[string][]string) interface{}); ok {
+		r0 = rf(table, target, filter)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]map[string]interface{})
+			r0 = ret.Get(0).(interface{})
 		}
 	}
 

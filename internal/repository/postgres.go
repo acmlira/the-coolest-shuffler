@@ -21,7 +21,7 @@ func NewDatabase(dsn string) *Database {
 	return &Database{database: database}
 }
 
-func (d *Database) Select(table string, filter map[string][]string, model interface{}) []map[string]interface{} {
+func (d *Database) Select(table string, target interface{}, filter map[string][]string) interface{} {
 	var query *gorm.DB = d.database
 	for k, v := range filter {
 		if len(v) > 0 {
@@ -29,12 +29,11 @@ func (d *Database) Select(table string, filter map[string][]string, model interf
 		}
 	}
 
-	var results []map[string]interface{}
-	var result = query.Table(table).Model(&model).Find(&results)
+	var result = query.Table(table).Find(&target)
 	if result.Error != nil {
 		log.Error(result.Error)
 	} else {
 		log.Debug("Retrived " + strconv.Itoa(int(result.RowsAffected)) + " objects")
 	}
-	return results
+	return target
 }

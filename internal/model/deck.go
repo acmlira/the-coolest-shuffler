@@ -1,6 +1,8 @@
 package model
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 type Deck struct {
 	Id        uuid.UUID `json:"deck_id"`
@@ -10,12 +12,12 @@ type Deck struct {
 	Cards     []Card    `json:"cards"`
 }
 
-func NewDeck(id uuid.UUID, cards []Card, remaining int, shuffle bool, amount int) *Deck {
+func NewDeck(id uuid.UUID, cards []Card, shuffle bool, amount int) *Deck {
 	return &Deck{
 		Id:        id,
-		Remaining: remaining,
 		Shuffle:   shuffle,
 		Amount:    amount,
 		Cards:     cards,
+		Remaining: len(cards),
 	}
 }

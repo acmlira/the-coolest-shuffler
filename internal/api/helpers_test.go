@@ -27,7 +27,7 @@ func TestRequiredUUID(t *testing.T) {
 
 	for _, it := range scenarios {
 		t.Run(it.name, func(t *testing.T) {
-			value, err := RequiredUUID(it.value, "")
+			value, err := requiredUUID(it.value, "")
 			if it.shouldFail {
 				assert.NotNil(t, err)
 			} else {
@@ -55,7 +55,7 @@ func TestOptionalInt(t *testing.T) {
 
 	for _, it := range scenarios {
 		t.Run(it.name, func(t *testing.T) {
-			value := OptionalInt(it.value, "", it.defaultValue)
+			value := optionalInt(it.value, "", it.defaultValue)
 			assert.Equal(t, it.expected, value)
 		})
 	}
@@ -86,7 +86,7 @@ func TestOptionalBool(t *testing.T) {
 
 	for _, it := range scenarios {
 		t.Run(it.name, func(t *testing.T) {
-			value := OptionalBool(it.value, "", it.defaultValue)
+			value := optionalBool(it.value, "", it.defaultValue)
 			assert.Equal(t, it.expected, value)
 		})
 	}
@@ -106,7 +106,7 @@ func TestOptionalStringList(t *testing.T) {
 
 	for _, it := range scenarios {
 		t.Run(it.name, func(t *testing.T) {
-			value := OptionalStringList(it.value, "")
+			value := optionalStringList(it.value, "")
 			assert.Equal(t, it.expected, value)
 		})
 	}
