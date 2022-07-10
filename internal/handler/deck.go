@@ -7,18 +7,13 @@ import (
 	"the-coolest-shuffler/internal/model"
 )
 
-type DeckHandler struct {}
-
-func NewDeckHandler() *DeckHandler {
-	return &DeckHandler{}
+func Deck(deck *model.Deck) *model.Deck {
+	amount(deck)
+	shuffle(deck)
+	return deck
 }
 
-func (dh *DeckHandler) Handle(deck *model.Deck) {
-	dh.amount(deck)
-	dh.shuffle(deck)
-}
-
-func (dh *DeckHandler) shuffle(deck *model.Deck) {
+func shuffle(deck *model.Deck) {
 	if deck.Shuffle {
 		rand.Seed(time.Now().UnixNano())
 		rand.Shuffle(len(deck.Cards), func(i, j int) {
@@ -27,7 +22,7 @@ func (dh *DeckHandler) shuffle(deck *model.Deck) {
 	}
 }
 
-func (dh *DeckHandler) amount(deck *model.Deck) {
+func amount(deck *model.Deck) {
 	if deck.Amount == 0 {
 		deck.Cards = []model.Card{}
 		deck.Remaining = 0
