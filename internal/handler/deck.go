@@ -3,7 +3,7 @@ package handler
 import (
 	"math/rand"
 	"time"
-	
+
 	"the-coolest-shuffler/internal/model"
 )
 

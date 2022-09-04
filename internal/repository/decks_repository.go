@@ -15,13 +15,13 @@ type DecksRepository struct {
 	Context context.Context
 }
 
-func NewDecksRepository(url string, database int, password string) *DecksRepository{
+func NewDecksRepository(url string, database int, password string) *DecksRepository {
 	return &DecksRepository{
 		Redis: redis.NewClient(&redis.Options{
 			Addr:     url,
 			Password: password,
 			DB:       database,
-		}), 
+		}),
 		Context: context.Background(),
 	}
 }

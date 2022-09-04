@@ -7,16 +7,16 @@ import (
 	uuid "github.com/google/uuid"
 )
 
-type CardsRepository interface {
+type DecksRepository interface {
 	Set(deck *model.Deck) *model.Deck
 	Get(key uuid.UUID) *model.Deck
 }
 
-type DecksRepository interface {
+type CardsRepository interface {
 	Get(codes []string, values []string, suits []string) []model.Card
 }
 
-type Shuffler struct{
+type Shuffler struct {
 	CardsRepository CardsRepository
 	DecksRepository DecksRepository
 }
@@ -30,16 +30,16 @@ func NewShuffler(cardsRepository CardsRepository, decksRepository DecksRepositor
 
 func (s *Shuffler) Create(request *model.Request) *model.Deck {
 	deck := model.NewDeck(
-		uuid.New(), 
-		s.DecksRepository.Get(request.Codes, request.Values, request.Suits), 
-		request.Shuffle, 
+		uuid.New(),
+		s.CardsRepository.Get(request.Codes, request.Values, request.Suits),
+		request.Shuffle,
 		request.Amount)
 
 	deck = handler.Deck(deck)
 
-	return s.CardsRepository.Set(deck)
+	return s.DecksRepository.Set(deck)
 }
 
-func (s *Shuffler) Show(request *model.Request) *model.Deck  {
-	return s.CardsRepository.Get(request.Id)
+func (s *Shuffler) Show(request *model.Request) *model.Deck {
+	return s.DecksRepository.Get(request.Id)
 }

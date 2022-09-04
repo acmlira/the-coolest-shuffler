@@ -26,7 +26,7 @@ func main() {
 	server.HideBanner = true
 	server.HidePort = true
 
-	shuffler := service.NewShuffler(decksRepository, cardsRepository)
+	shuffler := service.NewShuffler(cardsRepository, decksRepository)
 
 	// Register API routes
 	deckAPI := api.NewDeckAPI(shuffler)
