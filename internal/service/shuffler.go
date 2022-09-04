@@ -3,7 +3,6 @@ package service
 import (
 	"the-coolest-shuffler/internal/handler"
 	"the-coolest-shuffler/internal/model"
-	"the-coolest-shuffler/internal/request"
 
 	uuid "github.com/google/uuid"
 )
@@ -29,7 +28,7 @@ func NewShuffler(cardsRepository CardsRepository, decksRepository DecksRepositor
 	}
 }
 
-func (s *Shuffler) Create(request *request.Deck) *model.Deck {
+func (s *Shuffler) Create(request *model.Request) *model.Deck {
 	deck := model.NewDeck(
 		uuid.New(), 
 		s.DecksRepository.Get(request.Codes, request.Values, request.Suits), 
@@ -41,6 +40,6 @@ func (s *Shuffler) Create(request *request.Deck) *model.Deck {
 	return s.CardsRepository.Set(deck)
 }
 
-func (s *Shuffler) Show(request *request.Deck) *model.Deck  {
+func (s *Shuffler) Show(request *model.Request) *model.Deck  {
 	return s.CardsRepository.Get(request.Id)
 }

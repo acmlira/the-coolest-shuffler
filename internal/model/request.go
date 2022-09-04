@@ -1,8 +1,10 @@
-package request
+package model
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
-type Deck struct {
+type Request struct {
 	Id      uuid.UUID `json:"id" param:"id" query:"id"`
 	Shuffle bool      `json:"shuffle" param:"shuffle" query:"shuffle"`
 	Amount  int       `json:"amount" param:"amount" query:"amount"`

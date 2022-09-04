@@ -4,35 +4,34 @@ import (
 	"net/http"
 
 	"the-coolest-shuffler/internal/model"
-	"the-coolest-shuffler/internal/request"
 
 	"github.com/labstack/echo/v4"
 )
 
 type Shuffler interface {
-	Create(deck *request.Deck) *model.Deck
-	Show(deck *request.Deck) *model.Deck
+	Create(deck *model.Request) *model.Deck
+	Show(deck *model.Request) *model.Deck
 }
 
-type Decks struct {
+type DeckAPI struct {
 	Shuffler Shuffler
 }
 
-func NewDecks(shuffler Shuffler) *Decks {
-	return &Decks{
+func NewDeckAPI(shuffler Shuffler) *DeckAPI {
+	return &DeckAPI{
 		Shuffler: shuffler,
 	}
 }
 
-func (d Decks) Register(server *echo.Echo) {
+func (d DeckAPI) Register(server *echo.Echo) {
 	v1 := server.Group("the-coolest-shuffler/v1")
 	v1.POST("/deck", d.Create)
 	v1.GET("/deck/new", d.New)
 	v1.GET("/deck/:id", d.Show)
 }
 
-func (d Decks) Create(c echo.Context) error {
-	deck := new(request.Deck)
+func (d DeckAPI) Create(c echo.Context) error {
+	deck := new(model.Request)
 	if err := c.Bind(deck); err != nil {
 		return badRequest(c, err)
 	}
@@ -40,8 +39,8 @@ func (d Decks) Create(c echo.Context) error {
 	return ok(c, d.Shuffler.Create(deck))
 }
 
-func (d Decks) New(c echo.Context) error {
-	deck := new(request.Deck)
+func (d DeckAPI) New(c echo.Context) error {
+	deck := new(model.Request)
 	if err := c.Bind(deck); err != nil {
 		return badRequest(c, err)
 	}
@@ -49,8 +48,8 @@ func (d Decks) New(c echo.Context) error {
 	return ok(c, d.Shuffler.Create(deck))
 }
 
-func (d Decks) Show(c echo.Context) error {
-	deck := new(request.Deck)
+func (d DeckAPI) Show(c echo.Context) error {
+	deck := new(model.Request)
 	if err := c.Bind(deck); err != nil {
 		return badRequest(c, err)
 	}

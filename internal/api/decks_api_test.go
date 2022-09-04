@@ -21,7 +21,7 @@ func TestDeck(t *testing.T) {
 	service.On("Show", mock.Anything).Return(&model.Deck{})
 
 	t.Run(`CreateNewDeck`, func(t *testing.T) {
-		tested := NewDecks(service)
+		tested := NewDeckAPI(service)
 		e := echo.New()
 		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
 		recorder := httptest.NewRecorder()
@@ -33,7 +33,7 @@ func TestDeck(t *testing.T) {
 	})
 
 	t.Run(`OpenDeck`, func(t *testing.T) {
-		tested := Decks{service}
+		tested := DeckAPI{service}
 		e := echo.New()
 		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
 		recorder := httptest.NewRecorder()

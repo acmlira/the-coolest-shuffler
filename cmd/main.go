@@ -29,8 +29,8 @@ func main() {
 	shuffler := service.NewShuffler(decksRepository, cardsRepository)
 
 	// Register API routes
-	decks := api.NewDecks(shuffler)
-	decks.Register(server)
+	deckAPI := api.NewDeckAPI(shuffler)
+	deckAPI.Register(server)
 
 	// Start procedure
 	log.Info("Starting the-coolest-shuffler in http://" + configs.GetAppUrl())
