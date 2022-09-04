@@ -27,34 +27,34 @@ func (d DeckAPI) Register(server *echo.Echo) {
 	v1 := server.Group("the-coolest-shuffler/v1")
 	v1.POST("/deck", d.Create)
 	v1.GET("/deck/new", d.New)
-	v1.GET("/deck/:id", d.Show)
+	v1.GET("/deck/:deckId", d.Show)
 }
 
 func (d DeckAPI) Create(c echo.Context) error {
-	deck := new(model.Request)
-	if err := c.Bind(deck); err != nil {
+	request := new(model.Request)
+	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.ShufflerService.Create(deck))
+	return ok(c, d.ShufflerService.Create(request))
 }
 
 func (d DeckAPI) New(c echo.Context) error {
-	deck := new(model.Request)
-	if err := c.Bind(deck); err != nil {
+	request := new(model.Request)
+	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.ShufflerService.Create(deck))
+	return ok(c, d.ShufflerService.Create(request))
 }
 
 func (d DeckAPI) Show(c echo.Context) error {
-	deck := new(model.Request)
-	if err := c.Bind(deck); err != nil {
+	request := new(model.Request)
+	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.ShufflerService.Show(deck))
+	return ok(c, d.ShufflerService.Show(request))
 }
 
 func ok(context echo.Context, object interface{}) error {

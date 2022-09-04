@@ -5,7 +5,7 @@ import (
 )
 
 type Request struct {
-	Id      uuid.UUID `json:"id" param:"id" query:"id"`
+	DeckId  uuid.UUID `json:"deckId" param:"deckId" query:"deckId"`
 	Shuffle bool      `json:"shuffle" param:"shuffle" query:"shuffle"`
 	Amount  int       `json:"amount" param:"amount" query:"amount"`
 	Codes   []string  `json:"codes" param:"codes" query:"codes"`
