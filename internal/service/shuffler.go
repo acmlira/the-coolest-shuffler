@@ -1,50 +1,46 @@
 package service
 
 import (
-	"the-coolest-shuffler/internal/filter"
 	"the-coolest-shuffler/internal/handler"
 	"the-coolest-shuffler/internal/model"
+	"the-coolest-shuffler/internal/request"
 
 	uuid "github.com/google/uuid"
 )
 
-type Cache interface {
-	Set(key uuid.UUID, target interface{}) interface{}
-	Get(key uuid.UUID, target interface{}) interface{}
+type CardsRepository interface {
+	Set(deck *model.Deck) *model.Deck
+	Get(key uuid.UUID) *model.Deck
 }
 
-type Database interface {
-	Select(table string, target interface{}, filter map[string][]string) interface{}
+type DecksRepository interface {
+	Get(codes []string, values []string, suits []string) []model.Card
 }
 
 type Shuffler struct{
-	Cache    Cache
-	Database Database
+	CardsRepository CardsRepository
+	DecksRepository DecksRepository
 }
 
-func NewShuffler(cache Cache, database Database) *Shuffler {
+func NewShuffler(cardsRepository CardsRepository, decksRepository DecksRepository) *Shuffler {
 	return &Shuffler{
-		Cache:    cache,
-		Database: database,
+		CardsRepository: cardsRepository,
+		DecksRepository: decksRepository,
 	}
 }
 
-func (s *Shuffler) CreateNewDeck(shuffle bool, amount int, cardFilter *filter.CardFilter) *model.Deck {
-	id := uuid.New()
-	cards := s.Database.Select("cards", []model.Card{}, cardFilter.Filter).([]model.Card)
-	deck := handler.Deck(model.NewDeck(id, cards, shuffle, amount))
-	s.Cache.Set(id, deck)
-	return deck
+func (s *Shuffler) Create(request *request.Deck) *model.Deck {
+	deck := model.NewDeck(
+		uuid.New(), 
+		s.DecksRepository.Get(request.Codes, request.Values, request.Suits), 
+		request.Shuffle, 
+		request.Amount)
+
+	deck = handler.Deck(deck)
+
+	return s.CardsRepository.Set(deck)
 }
 
-func (s *Shuffler) OpenDeck(id uuid.UUID) *model.Deck {
-	deck := s.Cache.Get(id, &model.Deck{}).(*model.Deck)
-	return deck
-}
-
-func (s *Shuffler) DrawCard(id uuid.UUID, count int) *model.Draw {
-	deck := s.Cache.Get(id, &model.Deck{}).(*model.Deck)
-	draw := handler.Draw(deck, model.NewDraw([]model.Card{}, count))
-	s.Cache.Set(id, deck)
-	return draw
+func (s *Shuffler) Show(request *request.Deck) *model.Deck  {
+	return s.CardsRepository.Get(request.Id)
 }

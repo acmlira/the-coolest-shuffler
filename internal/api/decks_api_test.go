@@ -17,18 +17,17 @@ import (
 func TestDeck(t *testing.T) {
 	id := uuid.New()
 	service := &mocks.Shuffler{}
-	service.On("CreateNewDeck", mock.Anything, mock.Anything, mock.Anything).Return(&model.Deck{})
-	service.On("OpenDeck", mock.Anything).Return(&model.Deck{})
-	service.On("DrawCard", mock.Anything, mock.Anything).Return(&model.Draw{})
+	service.On("Create", mock.Anything).Return(&model.Deck{})
+	service.On("Show", mock.Anything).Return(&model.Deck{})
 
 	t.Run(`CreateNewDeck`, func(t *testing.T) {
-		tested := Decks{service}
+		tested := NewDecks(service)
 		e := echo.New()
 		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
 		recorder := httptest.NewRecorder()
 		context := e.NewContext(request, recorder)
 		context.SetPath("/deck/new")
-		if assert.NoError(t, tested.CreateNewDeck(context)) {
+		if assert.NoError(t, tested.Create(context)) {
 			assert.Equal(t, http.StatusOK, recorder.Code)
 		}
 	})
@@ -43,21 +42,7 @@ func TestDeck(t *testing.T) {
 		context.SetParamNames("id")
 		context.SetParamValues(id.String())
 
-		if assert.NoError(t, tested.OpenDeck(context)) {
-			assert.Equal(t, http.StatusOK, recorder.Code)
-		}
-	})
-
-	t.Run(`DrawCard`, func(t *testing.T) {
-		tested := Decks{service}
-		e := echo.New()
-		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
-		recorder := httptest.NewRecorder()
-		context := e.NewContext(request, recorder)
-		context.SetPath("/deck/%s/draw")
-		context.SetParamNames("id")
-		context.SetParamValues(id.String())
-		if assert.NoError(t, tested.DrawCard(context)) {
+		if assert.NoError(t, tested.Show(context)) {
 			assert.Equal(t, http.StatusOK, recorder.Code)
 		}
 	})

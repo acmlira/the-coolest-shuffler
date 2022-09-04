@@ -15,8 +15,8 @@ func main() {
 	configs.Init()
 
 	// Initialize repositories
-	database := repository.NewDatabase(configs.GetPostgresDSN())
-	cache := repository.NewCache(
+	cardsRepository := repository.NewCardsRepository(configs.GetPostgresDSN())
+	decksRepository := repository.NewDecksRepository(
 		configs.GetRedisUrl(),
 		configs.GetRedisDatabase(),
 		configs.GetRedisPassword())
@@ -26,7 +26,7 @@ func main() {
 	server.HideBanner = true
 	server.HidePort = true
 
-	shuffler := service.NewShuffler(cache, database)
+	shuffler := service.NewShuffler(decksRepository, cardsRepository)
 
 	// Register API routes
 	decks := api.NewDecks(shuffler)

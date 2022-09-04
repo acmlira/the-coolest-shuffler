@@ -5,7 +5,7 @@ import (
 )
 
 type Deck struct {
-	Id        uuid.UUID `json:"deck_id"`
+	Id        uuid.UUID `json:"id"`
 	Remaining int       `json:"remaining"`
 	Shuffle   bool      `json:"shuffled"`
 	Amount    int       `json:"amount"`

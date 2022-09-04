@@ -63,9 +63,5 @@ func TestDeck(t *testing.T) {
 		var openedDeck = deckService.OpenDeck(context.Background(), newDeck.Id)
 
 		assert.Equal(t, openedDeck, newDeck)
-
-		var drawCards = deckService.DrawCard(context.Background(), openedDeck.Id, 1)
-
-		assert.Equal(t, drawCards.Cards, openedDeck.Cards)
 	})
 }
