@@ -8,18 +8,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Shuffler interface {
+type ShufflerService interface {
 	Create(deck *model.Request) *model.Deck
 	Show(deck *model.Request) *model.Deck
 }
 
 type DeckAPI struct {
-	Shuffler Shuffler
+	ShufflerService ShufflerService
 }
 
-func NewDeckAPI(shuffler Shuffler) *DeckAPI {
+func NewDeckAPI(shufflerService ShufflerService) *DeckAPI {
 	return &DeckAPI{
-		Shuffler: shuffler,
+		ShufflerService: shufflerService,
 	}
 }
 
@@ -36,7 +36,7 @@ func (d DeckAPI) Create(c echo.Context) error {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.Shuffler.Create(deck))
+	return ok(c, d.ShufflerService.Create(deck))
 }
 
 func (d DeckAPI) New(c echo.Context) error {
@@ -45,7 +45,7 @@ func (d DeckAPI) New(c echo.Context) error {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.Shuffler.Create(deck))
+	return ok(c, d.ShufflerService.Create(deck))
 }
 
 func (d DeckAPI) Show(c echo.Context) error {
@@ -54,7 +54,7 @@ func (d DeckAPI) Show(c echo.Context) error {
 		return badRequest(c, err)
 	}
 
-	return ok(c, d.Shuffler.Show(deck))
+	return ok(c, d.ShufflerService.Show(deck))
 }
 
 func ok(context echo.Context, object interface{}) error {

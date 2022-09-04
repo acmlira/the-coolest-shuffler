@@ -16,19 +16,19 @@ type CardsRepository interface {
 	Get(codes []string, values []string, suits []string) []model.Card
 }
 
-type Shuffler struct {
+type ShufflerService struct {
 	CardsRepository CardsRepository
 	DecksRepository DecksRepository
 }
 
-func NewShuffler(cardsRepository CardsRepository, decksRepository DecksRepository) *Shuffler {
-	return &Shuffler{
+func NewShufflerService(cardsRepository CardsRepository, decksRepository DecksRepository) *ShufflerService {
+	return &ShufflerService{
 		CardsRepository: cardsRepository,
 		DecksRepository: decksRepository,
 	}
 }
 
-func (s *Shuffler) Create(request *model.Request) *model.Deck {
+func (s *ShufflerService) Create(request *model.Request) *model.Deck {
 	deck := model.NewDeck(
 		uuid.New(),
 		s.CardsRepository.Get(request.Codes, request.Values, request.Suits),
@@ -40,6 +40,6 @@ func (s *Shuffler) Create(request *model.Request) *model.Deck {
 	return s.DecksRepository.Set(deck)
 }
 
-func (s *Shuffler) Show(request *model.Request) *model.Deck {
+func (s *ShufflerService) Show(request *model.Request) *model.Deck {
 	return s.DecksRepository.Get(request.Id)
 }
