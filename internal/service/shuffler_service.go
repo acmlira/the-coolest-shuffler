@@ -1,8 +1,9 @@
 package service
 
 import (
-	"the-coolest-shuffler/internal/handler"
+	"math/rand"
 	"the-coolest-shuffler/internal/model"
+	"time"
 
 	uuid "github.com/google/uuid"
 )
@@ -35,11 +36,35 @@ func (s *ShufflerService) Create(request *model.Request) *model.Deck {
 		request.Shuffle,
 		request.Amount)
 
-	deck = handler.Deck(deck)
+	doShuffle(deck)
+	applyAmount(deck)
 
 	return s.DecksRepository.Set(deck)
 }
 
 func (s *ShufflerService) Show(request *model.Request) *model.Deck {
-	return s.DecksRepository.Get(request.Id)
+	return s.DecksRepository.Get(request.DeckId)
+}
+
+func doShuffle(deck *model.Deck) {
+	if deck.Shuffle {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(deck.Cards), func(i int, j int) {
+			deck.Cards[i], deck.Cards[j] = deck.Cards[j], deck.Cards[i]
+		})
+	}
+}
+
+func applyAmount(deck *model.Deck) {
+	if deck.Amount == 0 {
+		deck.Cards = []model.Card{}
+		deck.Remaining = 0
+	}
+	if deck.Amount > 1 {
+		cards := deck.Cards
+		for i := 1; i < deck.Amount; i++ {
+			deck.Cards = append(deck.Cards, cards...)
+		}
+		deck.Remaining = len(deck.Cards)
+	}
 }
