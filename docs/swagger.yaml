@@ -9,6 +9,25 @@ definitions:
       value:
         type: string
     type: object
+  model.CreateRequest:
+    properties:
+      amount:
+        type: integer
+      codes:
+        items:
+          type: string
+        type: array
+      shuffle:
+        type: boolean
+      suits:
+        items:
+          type: string
+        type: array
+      values:
+        items:
+          type: string
+        type: array
+    type: object
   model.Deck:
     properties:
       amount:
@@ -23,27 +42,6 @@ definitions:
         type: integer
       shuffled:
         type: boolean
-    type: object
-  model.Request:
-    properties:
-      amount:
-        type: integer
-      codes:
-        items:
-          type: string
-        type: array
-      deckId:
-        type: string
-      shuffle:
-        type: boolean
-      suits:
-        items:
-          type: string
-        type: array
-      values:
-        items:
-          type: string
-        type: array
     type: object
 host: http://localhost:8916
 info:
@@ -68,7 +66,7 @@ paths:
         in: body
         name: Request
         schema:
-          $ref: '#/definitions/model.Request'
+          $ref: '#/definitions/model.CreateRequest'
       produces:
       - application/json
       responses:

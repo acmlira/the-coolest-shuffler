@@ -29,7 +29,7 @@ func NewShufflerService(cardsRepository CardsRepository, decksRepository DecksRe
 	}
 }
 
-func (s *ShufflerService) Create(request *model.Request) *model.Deck {
+func (s *ShufflerService) Create(request *model.CreateRequest) *model.Deck {
 	deck := model.NewDeck(
 		uuid.New(),
 		s.CardsRepository.Get(request.Codes, request.Values, request.Suits),
@@ -42,7 +42,7 @@ func (s *ShufflerService) Create(request *model.Request) *model.Deck {
 	return s.DecksRepository.Set(deck)
 }
 
-func (s *ShufflerService) Show(request *model.Request) *model.Deck {
+func (s *ShufflerService) Show(request *model.ShowRequest) *model.Deck {
 	return s.DecksRepository.Get(request.DeckId)
 }
 

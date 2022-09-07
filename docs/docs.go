@@ -42,7 +42,7 @@ const docTemplate = `{
                         "name": "Request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/model.Request"
+                            "$ref": "#/definitions/model.CreateRequest"
                         }
                     }
                 ],
@@ -203,6 +203,35 @@ const docTemplate = `{
                 }
             }
         },
+        "model.CreateRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "codes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "shuffle": {
+                    "type": "boolean"
+                },
+                "suits": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "model.Deck": {
             "type": "object",
             "properties": {
@@ -223,38 +252,6 @@ const docTemplate = `{
                 },
                 "shuffled": {
                     "type": "boolean"
-                }
-            }
-        },
-        "model.Request": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "integer"
-                },
-                "codes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "deckId": {
-                    "type": "string"
-                },
-                "shuffle": {
-                    "type": "boolean"
-                },
-                "suits": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "values": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             }
         }

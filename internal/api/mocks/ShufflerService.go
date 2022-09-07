@@ -13,13 +13,13 @@ type ShufflerService struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: deck
-func (_m *ShufflerService) Create(deck *model.Request) *model.Deck {
-	ret := _m.Called(deck)
+// Create provides a mock function with given fields: request
+func (_m *ShufflerService) Create(request *model.CreateRequest) *model.Deck {
+	ret := _m.Called(request)
 
 	var r0 *model.Deck
-	if rf, ok := ret.Get(0).(func(*model.Request) *model.Deck); ok {
-		r0 = rf(deck)
+	if rf, ok := ret.Get(0).(func(*model.CreateRequest) *model.Deck); ok {
+		r0 = rf(request)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.Deck)
@@ -29,13 +29,13 @@ func (_m *ShufflerService) Create(deck *model.Request) *model.Deck {
 	return r0
 }
 
-// Show provides a mock function with given fields: deck
-func (_m *ShufflerService) Show(deck *model.Request) *model.Deck {
-	ret := _m.Called(deck)
+// Show provides a mock function with given fields: request
+func (_m *ShufflerService) Show(request *model.ShowRequest) *model.Deck {
+	ret := _m.Called(request)
 
 	var r0 *model.Deck
-	if rf, ok := ret.Get(0).(func(*model.Request) *model.Deck); ok {
-		r0 = rf(deck)
+	if rf, ok := ret.Get(0).(func(*model.ShowRequest) *model.Deck); ok {
+		r0 = rf(request)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.Deck)

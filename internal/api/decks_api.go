@@ -11,8 +11,8 @@ import (
 )
 
 type ShufflerService interface {
-	Create(deck *model.Request) *model.Deck
-	Show(deck *model.Request) *model.Deck
+	Create(request *model.CreateRequest) *model.Deck
+	Show(request *model.ShowRequest) *model.Deck
 }
 
 type DeckAPI struct {
@@ -40,13 +40,13 @@ func (d DeckAPI) Register(server *echo.Echo) {
 // @Tags 		Deck
 // @Accept		json
 // @Produce 	json
-// @Param		Request body model.Request false "Deck properties"
+// @Param		Request body model.CreateRequest false "Deck properties"
 // @Success		200	{object} model.Deck
 // @Failure		400	{object} string
 // @Failure		500 {object} string
 // @Router      /deck [post]
 func (d DeckAPI) Create(c echo.Context) error {
-	request := new(model.Request)
+	request := new(model.CreateRequest)
 	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
@@ -70,7 +70,7 @@ func (d DeckAPI) Create(c echo.Context) error {
 // @Failure		500 {object} string
 // @Router      /deck/new [get]
 func (d DeckAPI) New(c echo.Context) error {
-	request := new(model.Request)
+	request := new(model.CreateRequest)
 	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
@@ -90,7 +90,7 @@ func (d DeckAPI) New(c echo.Context) error {
 // @Failure		500 {object} string
 // @Router      /deck/{deckId} [get]
 func (d DeckAPI) Show(c echo.Context) error {
-	request := new(model.Request)
+	request := new(model.ShowRequest)
 	if err := c.Bind(request); err != nil {
 		return badRequest(c, err)
 	}
