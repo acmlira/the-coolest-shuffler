@@ -6,19 +6,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Logger = middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
-	LogURI:     true,
-	LogStatus:  true,
-	LogLatency: true,
-	LogMethod:  true,
-	LogValuesFunc: func(c echo.Context, values middleware.RequestLoggerValues) error {
-		log.WithFields(log.Fields{
-			"method":  values.Method,
-			"uri":     values.URI,
-			"status":  values.Status,
-			"latency": values.Latency,
-		}).Info("Request info")
-
-		return nil
-	},
+var Logger = middleware.BodyDump(func(c echo.Context, request []byte, response []byte) {
+	log.WithFields(log.Fields{
+		"message": c.Request().Method,
+		"uri":     c.Request().RequestURI,
+		"status":  c.Response().Status,
+	}).Info(string(response[:]))
 })
