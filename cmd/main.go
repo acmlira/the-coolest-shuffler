@@ -5,6 +5,7 @@ import (
 	"the-coolest-shuffler/internal/api"
 	"the-coolest-shuffler/internal/repository"
 	"the-coolest-shuffler/internal/service"
+	"the-coolest-shuffler/internal/middleware"
 
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
@@ -31,6 +32,9 @@ func main() {
 	// Register API routes
 	deckAPI := api.NewDeckAPI(shufflerService)
 	deckAPI.Register(server)
+
+	// Middlewares
+	server.Use(middleware.Logger)
 
 	// Start procedure
 	log.Info("Starting the-coolest-shuffler in http://" + configs.GetAppUrl())
