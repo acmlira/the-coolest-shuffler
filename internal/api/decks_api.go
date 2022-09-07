@@ -60,11 +60,11 @@ func (d DeckAPI) Create(c echo.Context) error {
 // @Tags 		Deck
 // @Accept		json
 // @Produce 	json
-// @Param		shuffle query bool     false "shuffle cards"
-// @Param		amount  query int      false "amount of card sets (before filters)"
-// @Param		codes   query []string false "code filter"
-// @Param		values  query []string false "value filter"
-// @Param		suits   query []string false "suit filter"
+// @Param		shuffle query model.CreateRequest.Shuffle false "shuffle cards"
+// @Param		amount  query model.CreateRequest.Amount  false "amount of card sets (before filters)"
+// @Param		codes   query model.CreateRequest.Codes   false "code filter"
+// @Param		values  query model.CreateRequest.Values  false "value filter"
+// @Param		suits   query model.CreateRequest.Suits   false "suit filter"
 // @Success		200	{object} model.Deck
 // @Failure		400	{object} string
 // @Failure		500 {object} string

@@ -119,10 +119,27 @@ paths:
       - application/json
       description: Create new Deck based in predefined cards
       parameters:
-      - description: shuffle cards
-        in: query
+      - in: query
+        name: amount
+        type: integer
+      - in: query
+        items:
+          type: string
+        name: codes
+        type: array
+      - in: query
         name: shuffle
         type: boolean
+      - in: query
+        items:
+          type: string
+        name: suits
+        type: array
+      - in: query
+        items:
+          type: string
+        name: values
+        type: array
       - description: amount of card sets (before filters)
         in: query
         name: amount

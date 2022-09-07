@@ -83,9 +83,37 @@ const docTemplate = `{
                 "summary": "Create new Deck",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "name": "amount",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "codes",
+                        "in": "query"
+                    },
+                    {
                         "type": "boolean",
-                        "description": "shuffle cards",
                         "name": "shuffle",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "suits",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "values",
                         "in": "query"
                     },
                     {
