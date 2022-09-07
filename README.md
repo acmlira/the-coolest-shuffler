@@ -39,7 +39,7 @@ curl -i -X GET "http://localhost:8916/the-coolest-shuffler/v1/deck/new?shuffle=t
 ```
 
 ```sh
-curl -i  -d '{"amount":"2"}' -H "Content-Type: application/json" -X POST "http://localhost:8916/the-coolest-shuffler/v1/deck"
+curl -i  -d '{"amount":2}' -H "Content-Type: application/json" -X POST "http://localhost:8916/the-coolest-shuffler/v1/deck"
 ```
 
 Open a **Deck**:

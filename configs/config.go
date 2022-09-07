@@ -42,6 +42,7 @@ func setConfigDefaults() *viper.Viper {
 	// App setup
 	config.SetDefault("app.host", "localhost")
 	config.SetDefault("app.port", "8916")
+	config.SetDefault("app.version", "1.0")
 	return config
 }
 
@@ -89,4 +90,8 @@ func GetAppPort() string {
 
 func GetAppUrl() string {
 	return GetAppHost() + ":" + GetAppPort()
+}
+
+func GetAppVersion() string {
+	return config.GetString("app.version")
 }

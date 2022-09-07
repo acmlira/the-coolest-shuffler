@@ -2,18 +2,34 @@ package main
 
 import (
 	"the-coolest-shuffler/configs"
+	docs "the-coolest-shuffler/docs"
 	"the-coolest-shuffler/internal/api"
+	"the-coolest-shuffler/internal/middleware"
 	"the-coolest-shuffler/internal/repository"
 	"the-coolest-shuffler/internal/service"
-	"the-coolest-shuffler/internal/middleware"
 
 	"github.com/labstack/echo/v4"
-	log "github.com/sirupsen/logrus"
 )
 
+// @title The Coolest Shuffler
+// @version 1.0
+// @description API to handle the deck and cards to be used in any game like Poker or Blackjack
+
+// @contact.name acmlira
+// @contact.url https://github.com/acmlira/the-coolest-shuffler
+
+// @license.name MIT
+// @license.url https://www.mit.edu/~amini/LICENSE.md
+
+// @host http://localhost:8916
+// @BasePath /the-coolest-shuffler/v1
 func main() {
 	// Initialize configurations
 	configs.Init()
+
+	// Init docs
+	docs.SwaggerInfo.Host = configs.GetAppUrl()
+	docs.SwaggerInfo.Version = configs.GetAppVersion()
 
 	// Initialize repositories
 	cardsRepository := repository.NewCardsRepository(configs.GetPostgresDSN())
@@ -37,6 +53,5 @@ func main() {
 	server.Use(middleware.Logger)
 
 	// Start procedure
-	log.Info("Starting the-coolest-shuffler in http://" + configs.GetAppUrl())
 	server.Start(configs.GetAppUrl())
 }

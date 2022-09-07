@@ -1,4 +1,4 @@
-all: clean test build run
+all: clean test swag build run
 
 build:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build ./cmd/main.go
@@ -24,3 +24,9 @@ mockery-install:
 mockery: mockery-install
 	mockery --all --dir ./internal/api --output ./internal/api/mocks
 	mockery --all --dir ./internal/service --output ./internal/service/mocks
+
+swag-install:
+	cd /tmp && go install github.com/swaggo/swag/cmd/swag@v1.8.0
+
+swag: swag-install
+	swag init -g main.go -d cmd/,internal/api/ -parseDependency
