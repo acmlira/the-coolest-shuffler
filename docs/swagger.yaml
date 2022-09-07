@@ -91,7 +91,7 @@ paths:
       - application/json
       description: Show a created deck
       parameters:
-      - description: code filter
+      - description: deckId
         in: path
         name: deckId
         type: string

@@ -160,7 +160,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "code filter",
+                        "description": "deckId",
                         "name": "deckId",
                         "in": "path"
                     }

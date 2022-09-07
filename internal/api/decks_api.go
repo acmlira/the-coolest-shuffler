@@ -84,7 +84,7 @@ func (d DeckAPI) New(c echo.Context) error {
 // @Tags 		Deck
 // @Accept		json
 // @Produce 	json
-// @Param		deckId path string false "code filter"
+// @Param		deckId path string false "deckId"
 // @Success		200	{object} model.Deck
 // @Failure		400	{object} string
 // @Failure		500 {object} string
