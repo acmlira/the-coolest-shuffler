@@ -19,7 +19,7 @@ lint:
 	gofmt -w .
 
 mockery-install:
-	cd /tmp && go install github.com/vektra/mockery/v2@latest
+	cd /tmp && go install github.com/vektra/mockery/v2@latest && go get github.com/stretchr/testify
 
 mockery: mockery-install
 	mockery --all --dir ./internal/api --output ./internal/api/mocks
