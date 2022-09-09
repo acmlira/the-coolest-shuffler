@@ -26,21 +26,21 @@ func NewDecksRepository(url string, database int, password string) *DecksReposit
 	}
 }
 
-func (c *DecksRepository) Set(deck *model.Deck) *model.Deck {
+func (dr *DecksRepository) Set(deck *model.Deck) *model.Deck {
 	value, err := json.Marshal(deck)
 	if err != nil {
 		log.Warn("Cannot insert key: value into cache")
 	}
-	err = c.Redis.Set(c.Context, deck.Id.String(), value, 0).Err()
+	err = dr.Redis.Set(dr.Context, deck.Id.String(), value, 0).Err()
 	if err != nil {
 		log.Error(err)
 	}
 	return deck
 }
 
-func (c *DecksRepository) Get(key uuid.UUID) *model.Deck {
+func (dr *DecksRepository) Get(key uuid.UUID) *model.Deck {
 	k := key.String()
-	value, err := c.Redis.Get(c.Context, k).Result()
+	value, err := dr.Redis.Get(dr.Context, k).Result()
 	if err == redis.Nil {
 		log.Info(k + " does not exist, cannot get")
 	} else if err != nil {
@@ -53,9 +53,9 @@ func (c *DecksRepository) Get(key uuid.UUID) *model.Deck {
 	return deck
 }
 
-func (c *DecksRepository) Del(key uuid.UUID) {
+func (dr *DecksRepository) Del(key uuid.UUID) {
 	k := key.String()
-	err := c.Redis.Del(c.Context, k).Err()
+	err := dr.Redis.Del(dr.Context, k).Err()
 	if err == redis.Nil {
 		log.Info(k + " does not exist, cannot delete")
 	} else if err != nil {

@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestDeck(t *testing.T) {
+func TestDeckAPI(t *testing.T) {
 	id := uuid.New()
 	service := &mocks.ShufflerService{}
 	service.On("Create", mock.Anything).Return(&model.Deck{})
@@ -22,10 +22,10 @@ func TestDeck(t *testing.T) {
 
 	t.Run(`CreateNewDeck`, func(t *testing.T) {
 		tested := NewDeckAPI(service)
-		e := echo.New()
+		server := echo.New()
 		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
 		recorder := httptest.NewRecorder()
-		context := e.NewContext(request, recorder)
+		context := server.NewContext(request, recorder)
 		context.SetPath("/deck/new")
 		if assert.NoError(t, tested.Create(context)) {
 			assert.Equal(t, http.StatusOK, recorder.Code)
@@ -34,10 +34,10 @@ func TestDeck(t *testing.T) {
 
 	t.Run(`OpenDeck`, func(t *testing.T) {
 		tested := DeckAPI{service}
-		e := echo.New()
+		server := echo.New()
 		request := httptest.NewRequest(http.MethodGet, "/the-coolest-shuffler/v1", nil)
 		recorder := httptest.NewRecorder()
-		context := e.NewContext(request, recorder)
+		context := server.NewContext(request, recorder)
 		context.SetPath("/deck/%s")
 		context.SetParamNames("id")
 		context.SetParamValues(id.String())
