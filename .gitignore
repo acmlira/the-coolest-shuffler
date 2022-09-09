@@ -1,3 +1,5 @@
 .vscode
 /the-coolest-shuffler
-docs/docs.go
+/docs/docs.go
+/docs/swagger.yaml
+/docs/swagger.json
