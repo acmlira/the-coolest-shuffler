@@ -1,6 +1,6 @@
 version: "1.0.0"
 postgres:
-  host: "localhost"
+  host: "the-coolest-shuffler_postgres_1"
   port: "5432"
   database: "postgres"
   user: "postgres"
@@ -8,10 +8,10 @@ postgres:
   timezone: "America/Fortaleza"
   sslmode: "disable"
 redis:
-  host: "localhost"
+  host: "the-coolest-shuffler_redis_1"
   port: "6379"
   database: 0
   password: ""
 app:
-  host: "localhost"
+  host: "the-coolest-shuffler_app_1"
   port: "8916"
