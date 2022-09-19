@@ -2,6 +2,8 @@ version: '3.9'
 
 services:
   postgres:
+    labels:
+      - name=the-coolest-shuffler_postgres
     image: postgres:10
     ports:
       - 5432:5432
@@ -12,6 +14,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   redis:
+    labels:
+      - name=the-coolest-shuffler_redis
     image: redis:6.2-alpine
     restart: always
     ports:
@@ -20,6 +24,8 @@ services:
     volumes: 
       - redis:/data
   app:
+    labels:
+      - name=the-coolest-shuffler_app
     ports:
       - 8916:8916
     build:
