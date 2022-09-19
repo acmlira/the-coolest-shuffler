@@ -13,10 +13,7 @@ require (
 	gorm.io/gorm v1.23.7
 )
 
-require (
-	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
-	github.com/go-redis/redismock/v8 v8.0.6 // indirect
-)
+require github.com/go-redis/redismock/v8 v8.0.6
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
@@ -58,7 +55,7 @@ require (
 	github.com/subosito/gotenv v1.3.0 // indirect
 	github.com/swaggo/echo-swagger v1.3.4
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
-	github.com/swaggo/swag v1.8.5
+	github.com/swaggo/swag v1.8.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
