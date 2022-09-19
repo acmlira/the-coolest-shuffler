@@ -1,9 +1,8 @@
-version: '3'
+version: '3.9'
 
 services:
   postgres:
     image: postgres:10
-    container_name: the-coolest-shuffler-postgres
     ports:
       - 5432:5432
     volumes:
@@ -14,7 +13,6 @@ services:
       - POSTGRES_PASSWORD=postgres
   redis:
     image: redis:6.2-alpine
-    container_name: the-coolest-shuffler-redis
     restart: always
     ports:
       - 6379:6379
@@ -22,7 +20,6 @@ services:
     volumes: 
       - redis:/data
   app:
-    container_name: the-coolest-shuffler-app
     ports:
       - 8916:8916
     build:
@@ -33,6 +30,7 @@ services:
     links:
       - postgres
       - redis
+
 volumes:
   redis:
     driver: local
